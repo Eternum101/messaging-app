@@ -51,7 +51,11 @@ function Messaging({ user, loggedInUser }) {
     return (
         <div className="messaging-container">
             <div className="messaging-header">
-                <h3>Messaging with {user.firstName} {user.lastName}</h3>
+                <img src={`/${user.image}`} alt={user.name} />
+            <div className="messaging-header-info">
+                <h3>{user.firstName} {user.lastName}</h3>
+                <h4>{user.email}</h4>
+            </div>
             </div>
     <div className="messaging-content">
             {messages.map((message, index) => {

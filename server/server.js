@@ -95,6 +95,8 @@ app.get('/logout', function(req, res){
     });
 });
 
+app.use('/images', express.static('public/images'));
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`)
 });

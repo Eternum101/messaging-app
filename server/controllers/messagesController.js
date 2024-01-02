@@ -5,8 +5,8 @@ exports.getMessages = async (req, res) => {
     try {
         const messages = await Message.find({
             $or: [
-                { to: new mongoose.Types.ObjectId(req.query.user) },
-                { from: new mongoose.Types.ObjectId(req.query.user) }
+                { to: new mongoose.Types.ObjectId(req.query.user), from: req.user._id },
+                { from: new mongoose.Types.ObjectId(req.query.user), to: req.user._id }
             ]
         }).populate('from', 'firstName lastName');
         res.json(messages);

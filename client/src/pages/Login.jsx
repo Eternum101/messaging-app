@@ -28,8 +28,23 @@ function Login() {
         setPassword('');
     };
 
+    const handleDemoClick = () => {
+        const demoEmail = 'johndoe@gmail.com'; 
+        const demoPassword = 'johndoe123';
+
+        axios.post('/users/login', { email: demoEmail, password: demoPassword })
+        .then(response => {
+            console.log('Login successful:', response.data);
+            localStorage.setItem('token', response.data.token);
+            navigate('/home');
+        })
+        .catch(error => {
+            console.error('Error during login:', error);
+        });
+    };
+
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event?.preventDefault();
         if (isLogin) {
             axios.post('/users/login', { email, password })
                 .then(response => {
@@ -65,7 +80,7 @@ function Login() {
                     <div className="access-desc">
                         <h2>{isLogin ? "Welcome Back." : "Sign Up"}</h2>
                         {isLogin && <h3>Please enter your details or 
-                            <span> try a demo account.</span>
+                            <span onClick={handleDemoClick}> try a demo account.</span>
                         </h3>}
                         {!isLogin && <h3>Already have an account? 
                             <span onClick={handleLoginClick}> Login</span>
