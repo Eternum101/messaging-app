@@ -1,5 +1,6 @@
 import { BiSolidMessageDetail } from "react-icons/bi";
 import { IoNotificationsSharp, IoPersonCircleSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 function Header() {
     return (
@@ -11,7 +12,7 @@ function Header() {
             <div className="user-container">
                 <input type="text" placeholder="Search" name="search"></input>
                 <button><IoNotificationsSharp /></button>
-                <button><IoPersonCircleSharp /></button>
+                <Link to='/profile'><button><IoPersonCircleSharp /></button></Link>
             </div>
         </header>
     )

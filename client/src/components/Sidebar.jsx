@@ -1,6 +1,7 @@
 import { RiMessage3Fill, RiSettingsFill, RiAdminFill, RiLogoutBoxLine } from "react-icons/ri";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function Sidebar() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Sidebar() {
         <div className="sidebar">
             <ul className="icon-container">
                 <li>
-                    <RiMessage3Fill />
+                    <RiMessage3Fill/>
                 </li>
                 <li>
                     <RiSettingsFill />
