@@ -43,18 +43,15 @@
 }
 
 .profile-info {
+    display: flex;
+    align-items: center;
     box-shadow: 0.5rem 0.5rem #433491, -0.5rem -0.5rem #3d3d3d;
 }
 
 .profile-avatar {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
+    width: 100%;
 }
 
 .profile-titles {

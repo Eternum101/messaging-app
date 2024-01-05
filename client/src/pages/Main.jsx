@@ -19,14 +19,19 @@ function Main() {
         }
     }, []);
 
+    useEffect(() => {
+        console.log('Setting loggedInUser Storage', loggedInUser);
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+    }, [loggedInUser]);
+
     const handleUserClick = (user) => {
         setSelectedUser(user);
     }
 
     return (
         <section className="layout-container">
-            <Header/>
-            <Sidebar/>
+            <Header loggedInUser={loggedInUser}/>
+            <Sidebar loggedInUser={loggedInUser}/>
             <Chats handleUserClick={handleUserClick} loggedInUser={loggedInUser} />
             {selectedUser && <Messaging user={selectedUser} loggedInUser={loggedInUser} />}
         </section>

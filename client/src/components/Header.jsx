@@ -2,7 +2,7 @@ import { BiSolidMessageDetail } from "react-icons/bi";
 import { IoNotificationsSharp, IoPersonCircleSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
-function Header() {
+function Header({ loggedInUser }) {
     return (
         <header>
             <div className="header-logo-container">

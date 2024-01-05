@@ -5,43 +5,40 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { FaPenToSquare } from "react-icons/fa6";
 
-function Profile({ loggedInUser }) {
-    const [user, setUser] = useState(null);
+function Profile() {
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const [userData, setUserData] = useState(null);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
         if (loggedInUser) {
-            axios.get(`/users/${loggedInUser.userId}`, {
+            axios.get('/users/current', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then(response => {
-                setUser(response.data);
+                setUserData(response.data);
             })
             .catch(error => {
-                console.error('Error fetching user:', error);
+                console.error('Error fetching user data:', error);
             });
         }
-    }, [loggedInUser]);    
-
-    if (!user) {
-        return null; 
-    }
-
+    }, [loggedInUser]);
+    
     return (
         <section className="profile-layout-container">
-            <Header />
-            <Sidebar />
+            <Header loggedInUser={loggedInUser}/>
+            <Sidebar loggedInUser={loggedInUser}/>
             <div className="profile-container">
     <div className="profile-info">
     <div className="edit-icon"><FaPenToSquare /></div>
         <div className="profile-avatar">
-            <img src={`/${user.image}`} alt={user.name} />
+            <img src={`/${userData?.image}`} alt={userData?.firstName} />
         </div>
     <div className='profile-titles'>
-        <h2>{user.firstName} {user.lastName}</h2>
-        <p>{user.email}</p>
+        <h2>{userData?.firstName} {userData?.lastName}</h2>
+        <p>{userData?.email}</p>
     </div>
     </div>
     <div className="profile-about">
@@ -65,4 +62,3 @@ function Profile({ loggedInUser }) {
 }
 
 export default Profile;
-<button>Download CV</button>
