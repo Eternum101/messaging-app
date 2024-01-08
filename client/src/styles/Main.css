@@ -26,6 +26,12 @@ header {
     align-items: center;
     gap: 10px;
     font-size: 0.8rem;
+    transition: all ease-in-out 150ms;
+}
+
+.header-logo-container:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .header-logo-container svg {
@@ -41,6 +47,16 @@ header {
     justify-content: center;
     align-items: center;
     gap: 30px;
+}
+
+.user-container img {
+    opacity: 0.5;
+    width: 30px;
+    transition: all ease-in-out 150ms;
+}
+
+.user-container img:hover {
+    opacity: 1;
 }
 
 .user-container input {
@@ -90,6 +106,13 @@ header {
 }
 
 .icon-container li:hover {
+    background-color: #4434911a;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--accent-colour-1);
+}
+
+.active {
     background-color: #4434911a;
     border-radius: 10px;
     cursor: pointer;

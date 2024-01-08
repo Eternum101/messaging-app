@@ -7,6 +7,9 @@ const UserSchema = new mongoose.Schema({
     email: String,
     password: String,
     image: { type: String, default: 'images/default-profile.png' },
+    about: String,
+    roles: String,
+    apps: String, 
 });
 
 UserSchema.pre('save', async function(next) {

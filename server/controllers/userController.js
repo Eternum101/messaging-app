@@ -51,3 +51,15 @@ exports.signup = async (req, res) => {
         res.status(400).send(error);
     }
 };
+
+exports.updateCurrentUser = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, 'SECRET_KEY');
+        const updatedUser = await User.findByIdAndUpdate(decodedToken.userId, req.body, { new: true });
+        res.status(200).send(updatedUser);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+};
+

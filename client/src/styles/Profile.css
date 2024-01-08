@@ -51,7 +51,6 @@
 .profile-avatar {
     display: flex;
     flex-direction: column;
-    width: 100%;
 }
 
 .profile-titles {
@@ -71,4 +70,41 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-form input, .profile-form textarea {
+    border: 2px solid rgb(221, 221, 221);
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 150ms ease-in-out;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.profile-form input:hover, .profile-form textarea:hover, .profile-form input:focus, .profile-form textarea:focus {
+    border: 2px solid var(--accent-colour-1);
+}
+
+.profile-form button {
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 10px;
+    width: 100%;
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: var(--accent-colour-1);
+    color: #fff;
+    border: transparent;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transition: all 150ms ease-in-out;
+}
+
+.profile-form button:hover {
+    background-color: #443491e8;
 }
