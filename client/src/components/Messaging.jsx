@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react"; 
 import axios from "axios";
 import { IoSend } from "react-icons/io5";
-import { RiImageAddFill } from "react-icons/ri";
+import { MdOutlineEmojiEmotions } from "react-icons/md";
+import EmojiPicker from 'emoji-picker-react';
 
 function Messaging({ user, loggedInUser }) {
     const [messages, setMessages] = useState([]); 
-    const [newMessage, setNewMessage] = useState(''); 
+    const [newMessage, setNewMessage] = useState('');
     const token = localStorage.getItem('token');
+
+    const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false);
 
     useEffect(() => {
         if (user && loggedInUser) {
@@ -42,7 +45,15 @@ function Messaging({ user, loggedInUser }) {
                 console.error('Error sending message:', error);
             });
         }
-    };     
+    };
+    
+    const toggleEmojiPicker = () => {
+        setIsEmojiPickerVisible(!isEmojiPickerVisible);
+    };
+
+    const onEmojiClick = (emojiObject, event) => {
+        setNewMessage(newMessage + emojiObject.emoji);
+    };    
 
     if (!user) {
         return null; 
@@ -74,7 +85,10 @@ function Messaging({ user, loggedInUser }) {
 </div>
     <div className="messaging-input-container">
         <div className="messaging-input-content">
-            <button><RiImageAddFill /></button>
+        <div style={{ position: 'relative' }}>
+            <button onClick={toggleEmojiPicker}><MdOutlineEmojiEmotions /></button> 
+            {isEmojiPickerVisible && <div style={{ position: 'absolute', left: 20, bottom: '100%' }}><EmojiPicker onEmojiClick={onEmojiClick} /></div>}
+        </div>
             <input type="text" value={newMessage} onChange={e => setNewMessage(e.target.value)} placeholder="Write a message..."/>
             <button onClick={handleSendClick}><IoSend /></button>
         </div>

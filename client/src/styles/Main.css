@@ -214,7 +214,7 @@ header {
 
 .messaging-input-content {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     gap: 30px;
     position: absolute;
@@ -246,6 +246,12 @@ header {
 
 .messaging-input-content button:nth-child(1) {
     color: rgb(46, 46, 46);
+    opacity: 0.5;
+    transition: all 150ms ease-in-out;
+}
+
+.messaging-input-content button:nth-child(1):hover {
+    opacity: 1;
 }
 
 .messaging-content {
@@ -256,6 +262,10 @@ header {
 .messaging-user-container {
     display: flex;
     flex-direction: column;
+}
+
+.messaging-user-container img {
+    max-width: 100px;
 }
 
 .message {
