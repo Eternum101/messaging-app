@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import '../styles/Profile.css';
 import Sidebar from '../components/Sidebar';
@@ -15,6 +15,9 @@ function Profile() {
     const [isEditingRoles, setIsEditingRoles] = useState(false);
 
     const [editedData, setEditedData] = useState({});
+    const [isHovered, setIsHovered] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (loggedInUser) {
@@ -60,13 +63,26 @@ function Profile() {
                 [event.target.name]: event.target.value,
             });
         }
-    };    
+    };
+    
+    const handleMouseOver = () => {
+        setIsHovered(true);
+    };
+    
+    const handleMouseOut = () => {
+        setIsHovered(false);
+    };
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        axios.put('/users/current', editedData, {
+        setIsLoading(true);
+        const formData = new FormData();
+        Object.keys(editedData).forEach(key => formData.append(key, editedData[key]));
+        
+        axios.put('/users/current', formData, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
             }
         })
         .then(response => {
@@ -74,11 +90,35 @@ function Profile() {
             setIsEditingInfo(false);
             setIsEditingAbout(false);
             setIsEditingRoles(false);
+            URL.revokeObjectURL(editedData.imageUrl);
+            setIsLoading(false);
         })
         .catch(error => {
             console.error('Error updating user data:', error);
+            setIsLoading(false);
         })
     }
+
+    const fileInputRef = React.createRef();
+
+    const handleAvatarClick = () => {
+        if (!isEditingInfo) {
+            return;
+        }
+        fileInputRef.current.click();
+    };    
+
+    const handleImageChange = (event) => {
+        if (event.target.files[0]) {
+            const file = event.target.files[0];
+            const imageUrl = URL.createObjectURL(file);
+            setEditedData({
+                ...editedData,
+                image: file,
+                imageUrl: imageUrl,
+            });
+        }
+    };    
     
     return (
         <section className="profile-layout-container">
@@ -87,16 +127,23 @@ function Profile() {
             <div className="profile-container">
     <div className="profile-info">
     <div className="edit-icon" onClick={handleEditClickInfo}><FaPenToSquare /></div>
-        <div className="profile-avatar">
-            <img src={`/${userData?.image}`} alt={userData?.firstName} />
-        </div>
+        <div className="profile-avatar" onClick={handleAvatarClick}>
+        <img 
+            src={isEditingInfo ? (editedData.imageUrl || userData?.image) : userData?.image}
+            alt={userData?.firstName} 
+            style={isEditingInfo ? (isHovered ? { cursor: 'pointer', transform: 'translateY(-1rem)', opacity: '0.5' } : { cursor: 'pointer', opacity: '1' }) : { opacity: '1' }}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+        />
+    </div>
         <div className='profile-titles'>
                     {isEditingInfo ? (
                         <form className="profile-form" onSubmit={handleFormSubmit}>
                             <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
                             <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
                             <input type="email" name="email" value={editedData.email} onChange={handleInputChange} />
-                            <button type="submit">Save</button>
+                            <input type="file" name='image' ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
+                            <button type="submit">{isLoading ? 'Saving...' : 'Save'}</button>
                         </form>
                     ) : (
                         <>
@@ -113,7 +160,7 @@ function Profile() {
             {isEditingAbout  ? (
             <form className="profile-form" onSubmit={handleFormSubmit}>
                 <textarea name="about" placeholder="Enter about info..." value={editedData.about || ''} onChange={handleInputChange} />
-                <button type="submit">Save</button>
+                <button type="submit">{isLoading ? 'Loading...' : 'Save'}</button>
             </form>
         ) : (
             <p>{userData?.about || 'No about info provided.'}</p>
@@ -127,7 +174,7 @@ function Profile() {
             <textarea name="roles" placeholder="Enter roles info..." value={editedData.roles || ''} onChange={handleInputChange} />
             <h4>Main Apps</h4>
             <input name="apps" placeholder="Enter apps info..." value={editedData.apps || ''} onChange={handleInputChange} />
-            <button type="submit">Save</button>
+            <button type="submit">{isLoading ? 'Loading...' : 'Save'}</button>
         </form>
     ) : (
         <>

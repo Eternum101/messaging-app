@@ -38,7 +38,7 @@ function Header({ loggedInUser }) {
                 <button><IoNotificationsSharp /></button>
                 <Link to='/profile'>
                     <button>
-                        <img src={`/${userData?.image}`} alt={userData?.firstName} />
+                        <img src={userData?.image} alt={userData?.firstName} />
                     </button>
                 </Link>
             </div>

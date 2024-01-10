@@ -53,6 +53,9 @@ header {
     opacity: 0.5;
     width: 30px;
     transition: all ease-in-out 150ms;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
 }
 
 .user-container img:hover {
