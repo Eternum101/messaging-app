@@ -17,15 +17,27 @@
     grid-area: profile-container;
 }
 
-.profile-info, .profile-about-info, .profile-roles {
+.profile-info {
     display: flex;
     flex-direction: column;
-    padding: 80px;
+    padding: 50px;
     border-radius: 10px;
     gap: 10px;
+    min-width: 30%;
+    min-height: 80%;
+    position: relative;
+}
+
+.profile-about-info, .profile-roles {
+    display: flex;
+    flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: relative;
-    height: 75%;
+    padding: 50px;
+    border-radius: 10px;
+    gap: 10px;
+    min-width: 600px;
+    min-height: 300px;
 }
 
 .edit-icon {
@@ -43,7 +55,6 @@
 }
 
 .profile-info {
-    display: flex;
     align-items: center;
     box-shadow: 0.5rem 0.5rem #433491, -0.5rem -0.5rem #3d3d3d;
 }
@@ -58,6 +69,7 @@
     height: 200px;
     border-radius: 50%;
     transition: all 150ms ease-in-out;
+    border: 3px solid var(--accent-colour-1);
 }
 
 .profile-titles {
@@ -67,34 +79,39 @@
     gap: 15px;
 }
 
+.profile-titles p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-titles svg {
+    font-size: 1.3rem;
+}
+
 .profile-about {
     display: flex;
     flex-direction: column;
     gap: 50px;
 }
 
-.profile-about-info, .profile-roles {
+.profile-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.profile-form input, .profile-form textarea {
+.profile-form input, .profile-form select, .profile-form textarea {
     border: 2px solid rgb(221, 221, 221);
     border-radius: 8px;
-    padding: 10px;
+    padding: 6px;
     transition: all 150ms ease-in-out;
     outline: none;
     font-size: 0.9rem;
 }
 
-.profile-form input:hover, .profile-form textarea:hover, .profile-form input:focus, .profile-form textarea:focus {
+.profile-form input:hover, .profile-form select:hover, .profile-form textarea:hover, .profile-form input:focus, .profile-form textarea:focus {
     border: 2px solid var(--accent-colour-1);
 }
 

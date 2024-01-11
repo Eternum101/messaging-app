@@ -4,6 +4,9 @@ import '../styles/Profile.css';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { FaPenToSquare } from "react-icons/fa6";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdEmail, MdClose } from "react-icons/md";
+import { CountryDropdown } from 'react-country-region-selector';
 
 function Profile() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -126,7 +129,7 @@ function Profile() {
             <Sidebar loggedInUser={loggedInUser}/>
             <div className="profile-container">
     <div className="profile-info">
-    <div className="edit-icon" onClick={handleEditClickInfo}><FaPenToSquare /></div>
+    <div className="edit-icon" onClick={handleEditClickInfo}>{isEditingInfo ? <MdClose /> : <FaPenToSquare />}</div>
         <div className="profile-avatar" onClick={handleAvatarClick}>
         <img 
             src={isEditingInfo ? (editedData.imageUrl || userData?.image) : userData?.image}
@@ -137,25 +140,35 @@ function Profile() {
         />
     </div>
         <div className='profile-titles'>
-                    {isEditingInfo ? (
-                        <form className="profile-form" onSubmit={handleFormSubmit}>
-                            <input type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
-                            <input type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
-                            <input type="email" name="email" value={editedData.email} onChange={handleInputChange} />
-                            <input type="file" name='image' ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
-                            <button type="submit">{isLoading ? 'Saving...' : 'Save'}</button>
-                        </form>
-                    ) : (
-                        <>
-                            <h2>{userData?.firstName} {userData?.lastName}</h2>
-                            <p>{userData?.email}</p>
-                        </>
-                    )}
-                </div>
-            </div>
+    {isEditingInfo ? (
+        <form className="profile-form" onSubmit={handleFormSubmit}>
+            <label htmlFor="firstName">First Name</label>
+            <input id="firstName" type="text" name="firstName" value={editedData.firstName} onChange={handleInputChange} />
+            <label htmlFor="lastName">Last Name</label>
+            <input id="lastName" type="text" name="lastName" value={editedData.lastName} onChange={handleInputChange} />
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" name="email" value={editedData.email} onChange={handleInputChange} />
+            <label htmlFor="location">Location</label>
+    <CountryDropdown
+        id="location"
+        value={editedData.location}
+        onChange={(val) => handleInputChange({ target: { name: 'location', value: val } })}
+    />
+            <input type="file" name='image' ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
+            <button type="submit">{isLoading ? 'Saving...' : 'Save'}</button>
+        </form>
+    ) : (
+    <>
+        <h2>{userData?.firstName} {userData?.lastName}</h2>
+        <p><MdEmail/>{userData?.email}</p>
+        <p><FaLocationDot/>{userData?.location || 'No location provided.'}</p>
+        </>
+    )}
+        </div>
+    </div>
     <div className="profile-about">
         <div className='profile-about-info'>
-        <div className="edit-icon" onClick={handleEditClickAbout}><FaPenToSquare /></div>
+        <div className="edit-icon" onClick={handleEditClickAbout}>{isEditingAbout ? <MdClose /> : <FaPenToSquare />}</div>
             <h3>About Me</h3>
             {isEditingAbout  ? (
             <form className="profile-form" onSubmit={handleFormSubmit}>
@@ -167,7 +180,7 @@ function Profile() {
         )}
     </div>
     <div className="profile-roles">
-    <div className="edit-icon" onClick={handleEditClickRoles}><FaPenToSquare /></div>
+    <div className="edit-icon" onClick={handleEditClickRoles}>{isEditingRoles ? <MdClose /> : <FaPenToSquare />}</div>
         <h3>Latest Roles</h3>
         {isEditingRoles ? (
         <form className="profile-form" onSubmit={handleFormSubmit}>

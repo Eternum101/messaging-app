@@ -29,7 +29,7 @@ function Chats({ handleUserClick, loggedInUser }) {
                     onClick={() => handleClick(user)}
                 >
                     <div key={user._id} className="user">
-                        <img src={`/${user.image}`} alt={user.name} />
+                        <img src={user.image} alt={user.name} />
                     <div className="user-info">
                         <h4>{user.firstName} <span>{user.lastName}</span></h4>
                         <p>Chat with {user.firstName} <span>{user.lastName}</span></p>
