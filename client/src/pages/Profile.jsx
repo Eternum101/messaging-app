@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import '../styles/Profile.css';
 import Sidebar from '../components/Sidebar';
@@ -7,23 +7,26 @@ import { FaPenToSquare } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail, MdClose } from "react-icons/md";
 import { CountryDropdown } from 'react-country-region-selector';
-import Loading from '../components/Loading';
-import useCurrentUser from "../hooks/useCurrentUser";
-
 import imageCompression from 'browser-image-compression';
+
+import useCurrentUser from "../hooks/useCurrentUser";
 
 function Profile() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    const { userData, isLoading } = useCurrentUser(loggedInUser);
     const token = localStorage.getItem('token');
+    const { userData, setUserData } = useCurrentUser(loggedInUser);
 
     const [isEditingInfo, setIsEditingInfo] = useState(false);
     const [isEditingAbout, setIsEditingAbout] = useState(false);
     const [isEditingRoles, setIsEditingRoles] = useState(false);
+    const [isImageEdited, setIsImageEdited] = useState(false);
 
     const [editedData, setEditedData] = useState({});
+    const [editedImage, setEditedImage] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
-    
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleEditClickInfo = () => {
         if (!isEditingInfo) {
             setEditedData(userData);
@@ -64,12 +67,14 @@ function Profile() {
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        setIsEditingInfo(false);
-        setIsEditingAbout(false);
-        setIsEditingRoles(false);
+        setIsLoading(true);
         const formData = new FormData();
         Object.keys(editedData).forEach(key => formData.append(key, editedData[key]));
-        
+    
+        if (isImageEdited && editedImage) {
+            formData.append('image', editedImage.image);
+        }
+    
         axios.put('/users/current', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -77,12 +82,21 @@ function Profile() {
             }
         })
         .then(response => {
-            URL.revokeObjectURL(editedData.imageUrl);
+            setUserData(response.data);
+            setIsEditingInfo(false);
+            setIsEditingAbout(false);
+            setIsEditingRoles(false);
+            if (editedImage) {
+                URL.revokeObjectURL(editedImage.imageUrl);
+                setEditedImage(null);
+            }
+            setIsLoading(false);
         })
         .catch(error => {
             console.error('Error updating user data:', error);
+            setIsLoading(false);
         })
-    }    
+    }
 
     const fileInputRef = React.createRef();
 
@@ -95,6 +109,7 @@ function Profile() {
 
     const handleImageChange = async (event) => {
         if (event.target.files[0]) {
+            setIsImageEdited(true);
             const file = event.target.files[0];
     
             const options = {
@@ -106,8 +121,7 @@ function Profile() {
             try {
                 const compressedFile = await imageCompression(file, options);
                 const imageUrl = URL.createObjectURL(compressedFile);
-                setEditedData({
-                    ...editedData,
+                setEditedImage({
                     image: compressedFile,
                     imageUrl: imageUrl,
                 });
@@ -117,10 +131,6 @@ function Profile() {
         }
     };
     
-    if (isLoading) {
-        return <Loading />;
-    }
-    
     return (
         <section className="profile-layout-container">
             <Header loggedInUser={loggedInUser}/>
@@ -128,15 +138,15 @@ function Profile() {
             <div className="profile-container">
     <div className="profile-info">
     <div className="edit-icon" onClick={handleEditClickInfo}>{isEditingInfo ? <MdClose /> : <FaPenToSquare />}</div>
-        <div className="profile-avatar" onClick={handleAvatarClick}>
-        <img 
-            src={isEditingInfo ? (editedData.imageUrl || userData?.image) : userData?.image}
-            alt={userData?.firstName} 
-            style={isEditingInfo ? (isHovered ? { cursor: 'pointer', transform: 'translateY(-1rem)', opacity: '0.5' } : { cursor: 'pointer', opacity: '1' }) : { opacity: '1' }}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-        />
-    </div>
+<div className="profile-avatar" onClick={handleAvatarClick}>
+    <img 
+        src={isEditingInfo ? (editedImage?.imageUrl || editedData.imageUrl || userData?.image) : userData?.image}
+        alt={userData?.firstName} 
+        style={isEditingInfo ? (isHovered ? { cursor: 'pointer', transform: 'translateY(-1rem)', opacity: '0.5' } : { cursor: 'pointer', opacity: '1' }) : { opacity: '1' }}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+    />
+</div>
         <div className='profile-titles'>
     {isEditingInfo ? (
         <form className="profile-form" onSubmit={handleFormSubmit}>
@@ -171,7 +181,7 @@ function Profile() {
             {isEditingAbout  ? (
             <form className="profile-form" onSubmit={handleFormSubmit}>
                 <textarea name="about" placeholder="Enter about info..." value={editedData.about || ''} onChange={handleInputChange} />
-                <button type="submit">{isLoading ? 'Loading...' : 'Save'}</button>
+                <button type="submit">{isLoading ? 'Saving...' : 'Save'}</button>
             </form>
         ) : (
             <p>{userData?.about || 'No about info provided.'}</p>
@@ -185,7 +195,7 @@ function Profile() {
             <textarea name="roles" placeholder="Enter roles info..." value={editedData.roles || ''} onChange={handleInputChange} />
             <h4>Main Apps</h4>
             <input name="apps" placeholder="Enter apps info..." value={editedData.apps || ''} onChange={handleInputChange} />
-            <button type="submit">{isLoading ? 'Loading...' : 'Save'}</button>
+            <button type="submit">{isLoading ? 'Saving...' : 'Save'}</button>
         </form>
     ) : (
         <>

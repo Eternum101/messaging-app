@@ -314,3 +314,49 @@ header {
     align-self: flex-start;
 }
 
+.btn-back {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .layout-container {
+        grid:
+          "header header header" auto
+          "chats-container chats-container chats-container" 1fr
+          "sidebar sidebar sidebar" auto
+          / 1fr 1fr 1fr;
+    }
+
+    .layout-container.chat-selected {
+        grid:
+          "header header header" auto
+          "messaging-container messaging-container messaging-container" 1fr
+          "sidebar sidebar sidebar" auto
+          / 1fr 1fr 1fr;
+    }
+
+    .chats-container {
+        border: none;
+    }
+
+    .sidebar {
+        flex-direction: row;
+    }
+
+    .icon-container {
+        flex-direction: row;
+    }
+
+    .chats-container.hide-on-mobile {
+        display: none;
+    }
+
+    .messaging-container.hide-on-mobile {
+        display: none;
+    }
+    
+    .btn-back {
+        display: block;
+    }
+}
+

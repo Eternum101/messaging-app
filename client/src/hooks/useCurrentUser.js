@@ -4,10 +4,10 @@ import axios from 'axios';
 const useCurrentUser = (loggedInUser) => {
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        if (loggedInUser) {
-            const token = localStorage.getItem('token');
+        if (loggedInUser && !userData) {
             axios.get('/users/current', {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -22,9 +22,9 @@ const useCurrentUser = (loggedInUser) => {
                 setIsLoading(false);
             });
         }
-    }, [loggedInUser]);
+    }, [loggedInUser, userData]);
 
-    return { userData, isLoading };
+    return { userData, isLoading, setUserData };
 };
 
 export default useCurrentUser;

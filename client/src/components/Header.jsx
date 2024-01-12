@@ -14,21 +14,21 @@ function Header({ loggedInUser }) {
     const [unreadCount, setUnreadCount] = useState(0);
 
     useEffect(() => {
-        if (loggedInUser) {
+        if (loggedInUser && unreadCount === null) {
             axios.get(`/messages/unread?user=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then(response => {
-                console.log('Unread messages:', response.data); // Log unread messages
                 setUnreadCount(response.data.length);
             })
             .catch(error => {
                 console.error('Error fetching unread messages:', error);
             });
         }
-    }, [loggedInUser]);
+    }, [loggedInUser, unreadCount]);
+    
 
     if (isLoading) {
         return <div><Loading/></div>;

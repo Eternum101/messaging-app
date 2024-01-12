@@ -5,7 +5,7 @@ import { MdOutlineEmojiEmotions } from "react-icons/md";
 import EmojiPicker from 'emoji-picker-react';
 import Loading from '../components/Loading';
 
-function Messaging({ user, loggedInUser }) {
+function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
     const [messages, setMessages] = useState([]); 
     const [newMessage, setNewMessage] = useState('');
     const token = localStorage.getItem('token');
@@ -73,15 +73,20 @@ function Messaging({ user, loggedInUser }) {
 
     const onEmojiClick = (emojiObject, event) => {
         setNewMessage(newMessage + emojiObject.emoji);
-    };  
+    };
+    
+    const handleBackClick = () => {
+        setIsChatSelected(false);
+    };
       
     if (isLoading) {
         return <Loading />;
     }
 
     return (
-        <div className="messaging-container">
+        <div className={`messaging-container ${isChatSelected ? '' : 'hide-on-mobile'}`}>
             <div className="messaging-header">
+                <button className='btn-back' onClick={handleBackClick}>Back</button>
                 <img src={user.image} alt={user.name} />
             <div className="messaging-header-info">
                 <h3>{user.firstName} {user.lastName}</h3>

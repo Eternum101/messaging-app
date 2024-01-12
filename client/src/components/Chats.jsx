@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from '../components/Loading';
 
-function Chats({ handleUserClick, loggedInUser }) {
+function Chats({ handleUserClick, loggedInUser, isChatSelected, setIsChatSelected }) {
     const [users, setUsers] = useState([]);
     const [activeUser, setActiveUser] = useState(null); // Add this line
 
@@ -23,6 +23,7 @@ function Chats({ handleUserClick, loggedInUser }) {
     const handleClick = (user) => {
         setActiveUser(user);
         handleUserClick(user);
+        setIsChatSelected(true);
     };
 
     if (isLoading) {
@@ -30,7 +31,7 @@ function Chats({ handleUserClick, loggedInUser }) {
     }
     
     return (
-        <div className="chats-container">
+        <div className={`chats-container ${isChatSelected ? 'hide-on-mobile' : ''}`}>
             <h3>Chats</h3>
             {users.filter(user => user._id !== loggedInUser.userId).map((user) => (
                 <div 
@@ -48,6 +49,7 @@ function Chats({ handleUserClick, loggedInUser }) {
             ))}
         </div>
     )
+    
 }
 
 export default Chats;

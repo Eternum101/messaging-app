@@ -36,8 +36,8 @@
     padding: 50px;
     border-radius: 10px;
     gap: 10px;
-    min-width: 600px;
-    min-height: 300px;
+    width: 600px;
+    height: 320px;
 }
 
 .edit-icon {
@@ -131,4 +131,39 @@
 
 .profile-form button:hover {
     background-color: #443491e8;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-layout-container {
+        grid:
+          "header header header" auto
+          "profile-container profile-container profile-container" 1fr
+          "sidebar sidebar sidebar" auto
+          / 1fr 1fr 1fr;
+    }
+
+    .sidebar {
+        flex-direction: row;
+    }
+
+    .profile-container {
+        flex-direction: column;
+    }
+
+    .profile-info {
+        min-width: 30%;
+        min-height: 30%;
+        margin-top: 20px;
+    }
+
+    .profile-about-info, .profile-roles {
+        min-width: 90%; /* Take up the full width on smaller devices */
+        min-height: 100px; /* Adjust as needed */
+        gap: 2px;
+        margin: 20px;
+    }
+
+    .profile-form {
+        flex-direction: column;
+    }
 }
