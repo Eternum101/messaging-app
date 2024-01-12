@@ -3,6 +3,7 @@ import axios from "axios";
 import { IoSend } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import EmojiPicker from 'emoji-picker-react';
+import Loading from '../components/Loading';
 
 function Messaging({ user, loggedInUser }) {
     const [messages, setMessages] = useState([]); 
@@ -10,6 +11,8 @@ function Messaging({ user, loggedInUser }) {
     const token = localStorage.getItem('token');
 
     const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         if (user && loggedInUser) {
@@ -20,13 +23,30 @@ function Messaging({ user, loggedInUser }) {
             })
             .then(response => {
                 setMessages(response.data);
+                setIsLoading(false);
+                response.data.forEach(message => {
+                    if (message.unread) {
+                        axios.put(`/messages/${message._id}/read`, {}, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        })
+                        .then(response => {
+                            console.log('Message marked as read:', response.data);
+                        })
+                        .catch(error => {
+                            console.error('Error marking message as read:', error);
+                        });
+                    }
+                });
             })
             .catch(error => {
                 console.error('Error fetching messages:', error);
+                setIsLoading(false);
             });
         }
     }, [user, loggedInUser]);
-
+    
     const handleSendClick = () => {
         if (user) {
             const message = { text: newMessage, to: user._id, from: loggedInUser.userId };
@@ -53,16 +73,16 @@ function Messaging({ user, loggedInUser }) {
 
     const onEmojiClick = (emojiObject, event) => {
         setNewMessage(newMessage + emojiObject.emoji);
-    };    
-
-    if (!user) {
-        return null; 
+    };  
+      
+    if (isLoading) {
+        return <Loading />;
     }
 
     return (
         <div className="messaging-container">
             <div className="messaging-header">
-                <img src={`/${user.image}`} alt={user.name} />
+                <img src={user.image} alt={user.name} />
             <div className="messaging-header-info">
                 <h3>{user.firstName} {user.lastName}</h3>
                 <h4>{user.email}</h4>
@@ -90,7 +110,7 @@ function Messaging({ user, loggedInUser }) {
             {isEmojiPickerVisible && <div style={{ position: 'absolute', left: 20, bottom: '100%' }}><EmojiPicker onEmojiClick={onEmojiClick} /></div>}
         </div>
             <input type="text" value={newMessage} onChange={e => setNewMessage(e.target.value)} placeholder="Write a message..."/>
-            <button onClick={handleSendClick}><IoSend /></button>
+            <button className='btn-send' onClick={handleSendClick} disabled={newMessage === ''} style={{ opacity: newMessage === '' ? 0.5 : 1 }}><IoSend /></button>
         </div>
     </div>
 </div>

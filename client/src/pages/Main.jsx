@@ -14,13 +14,12 @@ function Main() {
         const token = localStorage.getItem('token');
         if (token) {
             const decoded = jwtDecode(token);
-            console.log('Setting loggedInUser:', decoded);
             setLoggedInUser(decoded);
+            console.log(token); 
         }
     }, []);
 
     useEffect(() => {
-        console.log('Setting loggedInUser Storage', loggedInUser);
         localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
     }, [loggedInUser]);
 

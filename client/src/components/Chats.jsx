@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loading from '../components/Loading';
 
 function Chats({ handleUserClick, loggedInUser }) {
     const [users, setUsers] = useState([]);
     const [activeUser, setActiveUser] = useState(null); // Add this line
 
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         axios.get('/users')
             .then(response => {
                 setUsers(response.data);
+                setIsLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching users:', error);
+                setIsLoading(false);
             });
     }, []);
 
@@ -19,6 +24,10 @@ function Chats({ handleUserClick, loggedInUser }) {
         setActiveUser(user);
         handleUserClick(user);
     };
+
+    if (isLoading) {
+        return <Loading />;
+    }
     
     return (
         <div className="chats-container">

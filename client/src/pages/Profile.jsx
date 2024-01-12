@@ -7,10 +7,14 @@ import { FaPenToSquare } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail, MdClose } from "react-icons/md";
 import { CountryDropdown } from 'react-country-region-selector';
+import Loading from '../components/Loading';
+import useCurrentUser from "../hooks/useCurrentUser";
+
+import imageCompression from 'browser-image-compression';
 
 function Profile() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    const [userData, setUserData] = useState(null);
+    const { userData, isLoading } = useCurrentUser(loggedInUser);
     const token = localStorage.getItem('token');
 
     const [isEditingInfo, setIsEditingInfo] = useState(false);
@@ -19,24 +23,6 @@ function Profile() {
 
     const [editedData, setEditedData] = useState({});
     const [isHovered, setIsHovered] = useState(false);
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        if (loggedInUser) {
-            axios.get('/users/current', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                setUserData(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching user data:', error);
-            });
-        }
-    }, [loggedInUser]);
     
     const handleEditClickInfo = () => {
         if (!isEditingInfo) {
@@ -78,7 +64,9 @@ function Profile() {
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        setIsLoading(true);
+        setIsEditingInfo(false);
+        setIsEditingAbout(false);
+        setIsEditingRoles(false);
         const formData = new FormData();
         Object.keys(editedData).forEach(key => formData.append(key, editedData[key]));
         
@@ -89,18 +77,12 @@ function Profile() {
             }
         })
         .then(response => {
-            setUserData(response.data);
-            setIsEditingInfo(false);
-            setIsEditingAbout(false);
-            setIsEditingRoles(false);
             URL.revokeObjectURL(editedData.imageUrl);
-            setIsLoading(false);
         })
         .catch(error => {
             console.error('Error updating user data:', error);
-            setIsLoading(false);
         })
-    }
+    }    
 
     const fileInputRef = React.createRef();
 
@@ -111,17 +93,33 @@ function Profile() {
         fileInputRef.current.click();
     };    
 
-    const handleImageChange = (event) => {
+    const handleImageChange = async (event) => {
         if (event.target.files[0]) {
             const file = event.target.files[0];
-            const imageUrl = URL.createObjectURL(file);
-            setEditedData({
-                ...editedData,
-                image: file,
-                imageUrl: imageUrl,
-            });
+    
+            const options = {
+                maxSizeMB: 1,
+                maxWidthOrHeight: 200,
+                useWebWorker: true,
+            };
+    
+            try {
+                const compressedFile = await imageCompression(file, options);
+                const imageUrl = URL.createObjectURL(compressedFile);
+                setEditedData({
+                    ...editedData,
+                    image: compressedFile,
+                    imageUrl: imageUrl,
+                });
+            } catch (error) {
+                console.error('Error during image compression:', error);
+            }
         }
-    };    
+    };
+    
+    if (isLoading) {
+        return <Loading />;
+    }
     
     return (
         <section className="profile-layout-container">

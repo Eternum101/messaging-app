@@ -79,6 +79,22 @@ header {
     cursor: pointer;
 }
 
+.notification-badge {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -10px;
+    right: -10px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
 .sidebar {
     display: flex;
     flex-direction: column; 
@@ -186,6 +202,7 @@ header {
 .chat-active {
     background-color: #44349121;
     border-radius: 10px;
+    border-left: 4px solid var(--accent-colour-1);
 }
 
 .messaging-container {
@@ -204,6 +221,7 @@ header {
 .messaging-header img {
     width: 40px;
     height: 40px;
+    border-radius: 50%;
 }
 
 .messaging-header-info h4 {
@@ -243,23 +261,28 @@ header {
 .messaging-input-content button {
     background-color: transparent;
     border: none;
-    font-size: 1.5rem;
     cursor: pointer;
-    color: var(--accent-colour-1);
 }
 
 .messaging-input-content button:nth-child(1) {
     color: rgb(46, 46, 46);
     opacity: 0.5;
     transition: all 150ms ease-in-out;
+    font-size: 1.6rem;
 }
 
 .messaging-input-content button:nth-child(1):hover {
     opacity: 1;
 }
 
+.btn-send {
+    color: #433491 !important;
+    font-size: 1.4rem;
+}
+
 .messaging-content {
     overflow-y: auto;
+    max-height: 650px;
     padding: 10px;
 }
 

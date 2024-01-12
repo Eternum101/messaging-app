@@ -26,3 +26,32 @@ exports.postMessage = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
+
+exports.getUnreadMessages = async (req, res) => {
+    try {
+        const messages = await Message.find({
+            to: new mongoose.Types.ObjectId(req.query.user),
+            from: { $ne: req.user._id },
+            unread: true, 
+        });
+        res.json(messages);
+    } catch (error) {
+        console.error('Error fetching unread messages:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+exports.readMessage = async (req, res) => {
+    try {
+        const message = await Message.findById(req.params.id);
+        if (!message) {
+            return res.status(404).json({ error: 'Message not found' });
+        }
+        message.unread = false;
+        await message.save();
+        res.json(message);
+    } catch (error) {
+        console.error('Error reading message:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};

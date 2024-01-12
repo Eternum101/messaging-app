@@ -1,29 +1,38 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BiSolidMessageDetail } from "react-icons/bi";
 import { IoNotificationsSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import { BiSolidMessageDetail } from "react-icons/bi";
+import useCurrentUser from "../hooks/useCurrentUser";
+import Loading from '../components/Loading';
 
 function Header({ loggedInUser }) {
 
-    const [userData, setUserData] = useState(null);
+    const { userData, isLoading } = useCurrentUser(loggedInUser);
     const token = localStorage.getItem('token');
+
+    const [unreadCount, setUnreadCount] = useState(0);
 
     useEffect(() => {
         if (loggedInUser) {
-            axios.get('/users/current', {
+            axios.get(`/messages/unread?user=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then(response => {
-                setUserData(response.data);
+                console.log('Unread messages:', response.data); // Log unread messages
+                setUnreadCount(response.data.length);
             })
             .catch(error => {
-                console.error('Error fetching user data:', error);
+                console.error('Error fetching unread messages:', error);
             });
         }
     }, [loggedInUser]);
+
+    if (isLoading) {
+        return <div><Loading/></div>;
+    }
 
     return (
         <header>
@@ -34,8 +43,12 @@ function Header({ loggedInUser }) {
             </div>
         </Link>
             <div className="user-container">
-                <input type="text" placeholder="Search" name="search"></input>
-                <button><IoNotificationsSharp /></button>
+            <div style={{ position: 'relative'}}>
+                <button>
+                    <IoNotificationsSharp />
+                    {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
+                </button>
+            </div>
                 <Link to='/profile'>
                     <button>
                         <img src={userData?.image} alt={userData?.firstName} />

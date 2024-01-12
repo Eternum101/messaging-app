@@ -4,6 +4,7 @@ import '../styles/Login.css';
 import accessImage from '../assets/images/access.svg';
 import { BiSolidMessageDetail } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 function Login() {
     const [isLogin, setIsLogin] = useState(true);
@@ -11,6 +12,8 @@ function Login() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate(); 
 
@@ -29,12 +32,12 @@ function Login() {
     };
 
     const handleDemoClick = () => {
+        setIsLoading(true);
         const demoEmail = 'johndoe@gmail.com'; 
         const demoPassword = 'johndoe123';
 
         axios.post('/users/login', { email: demoEmail, password: demoPassword })
         .then(response => {
-            console.log('Login successful:', response.data);
             localStorage.setItem('token', response.data.token);
             navigate('/home');
         })
@@ -44,6 +47,7 @@ function Login() {
     };
 
     const handleSubmit = (event) => {
+        setIsLoading(true);
         event?.preventDefault();
         if (isLogin) {
             axios.post('/users/login', { email, password })
@@ -51,9 +55,11 @@ function Login() {
                     console.log('Login successful:', response.data);
                     localStorage.setItem('token', response.data.token);
                     navigate('/home');
+                    setIsLoading(false);
                 })
                 .catch(error => {
                     console.error('Error during login:', error);
+                    setIsLoading(false);
                 });
         } else {
             axios.post('/users/signup', { firstName, lastName, email, password })
@@ -67,8 +73,11 @@ function Login() {
                 });
         }
     };
-    
 
+    if (isLoading) {
+        return <Loading />;
+    }
+    
     return (
         <main className="welcome-container">
             <section className="access-container">
