@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { IoSend } from "react-icons/io5";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 import EmojiPicker from 'emoji-picker-react';
 import Loading from '../components/Loading';
 
@@ -88,7 +89,7 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
     return (
         <div className={`messaging-container ${isChatSelected ? '' : 'hide-on-mobile'}`}>
             <div className="messaging-header">
-                <button className='btn-back' onClick={handleBackClick}>Back</button>
+                <button className='btn-back' onClick={handleBackClick}><IoArrowBackCircleOutline /></button>
                 <img src={user.image} alt={user.name} />
             <div className="messaging-header-info">
                 <h3>{user.firstName} {user.lastName}</h3>

@@ -249,6 +249,7 @@ header {
     padding: 20px;
     border-right: 2px solid rgb(212, 212, 212);
     gap: 15px;
+    overflow-y: auto;
 }
 
 .chats-container h3 {
@@ -451,6 +452,7 @@ header {
 
     .sidebar {
         flex-direction: row;
+        border-right: none;
     }
 
     .icon-container {
@@ -466,7 +468,41 @@ header {
     }
     
     .btn-back {
-        display: block;
+        display: flex;
+        outline: none;
+        background-color: transparent;
+        border: none;
+        font-size: 2rem;
+    }
+    
+    .messaging-content {
+        max-height: 410px;
+    }
+
+    .dropdown-menu {
+        right: -50px;
+    }
+
+    .info-div {
+        width: 90%;
+    }
+}
+
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
+    .messaging-content {
+        max-height: 450px;
+    }
+}
+
+@media only screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) {
+    .messaging-content {
+        max-height: 230px;
+    }
+}
+
+@media only screen and (min-device-width: 360px) and (max-device-height: 740px) and (-webkit-min-device-pixel-ratio: 4) {
+    .messaging-content {
+        max-height: 300px;
     }
 }
 

@@ -109,6 +109,7 @@
     transition: all 150ms ease-in-out;
     outline: none;
     font-size: 0.9rem;
+    width: 100%;
 }
 
 .profile-form input:hover, .profile-form select:hover, .profile-form textarea:hover, .profile-form input:focus, .profile-form textarea:focus {
@@ -148,22 +149,98 @@
 
     .profile-container {
         flex-direction: column;
+        padding: 20px;
     }
 
     .profile-info {
-        min-width: 30%;
-        min-height: 30%;
+        min-width: 80%;
+        min-height: auto;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .profile-info form {
+        width: 50%;
+    }
+
+    .profile-about-info, .profile-roles {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .profile-form {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .profile-layout-container {
+        grid:
+          "header header header" auto
+          "profile-container profile-container profile-container" 1fr
+          "sidebar sidebar sidebar" auto
+          / 1fr 1fr 1fr;
+    }
+
+    .sidebar {
+        flex-direction: row;
+    }
+
+    .icon-container {
+        flex-direction: row;
+    }
+
+    .profile-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .profile-info {
+        min-width: 80%;
+        min-height: auto;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .profile-info form {
+        width: 50%;
+    }
+
+    .profile-about-info, .profile-roles {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .profile-form {
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .profile-container {
+        flex-direction: column;
+        padding: 20px;
+        justify-content: normal
+    }
+
+    .profile-info {
+        width: 100%;
+        min-height: auto;
+        padding: 20px;
         margin-top: 20px;
     }
 
     .profile-about-info, .profile-roles {
-        min-width: 90%; /* Take up the full width on smaller devices */
-        min-height: 100px; /* Adjust as needed */
-        gap: 2px;
-        margin: 20px;
+        width: 100%;
+        height: auto;
+        padding: 20px;
     }
 
     .profile-form {
-        flex-direction: column;
+        width: 100%;
     }
 }
+
