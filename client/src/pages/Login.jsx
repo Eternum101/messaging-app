@@ -14,6 +14,7 @@ function Login() {
     const [password, setPassword] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const navigate = useNavigate(); 
 
@@ -58,7 +59,11 @@ function Login() {
                     setIsLoading(false);
                 })
                 .catch(error => {
-                    console.error('Error during login:', error);
+                    if (error.response && error.response.status === 401) {
+                        setError('Email or Password is incorrect. Please try again.');
+                    } else {
+                        console.error('Error during login:', error);
+                    }
                     setIsLoading(false);
                 });
         } else {
@@ -102,6 +107,7 @@ function Login() {
                         {!isLogin && <input required className="input-lastname" type="text" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)}></input>}
                         <input required className="input-email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)}></input>
                         <input required type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}></input>
+                        {error && <div className="error-message">{error}</div>}
                         <div className="btn-access-container">
                             <button className="btn-login" type="submit">{isLogin ? "Login" : "Sign Up"}</button>
                             {isLogin && <button className="btn-sign-up" onClick={handleSignupClick}>Sign Up</button>}

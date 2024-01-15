@@ -63,8 +63,9 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    User.findById(jwt_payload.userId)
-        .then(user => {
+User.findById(jwt_payload.userId)
+    .then(user => {
+        console.log('User ID type:', typeof user._id);
             if (user) {
                 return done(null, user);
             } else {

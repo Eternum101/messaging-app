@@ -95,6 +95,56 @@ header {
     font-weight: 700;
 }
 
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 10;
+}
+
+.dropdown-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 0.9rem;
+    gap: 10px;
+}
+  
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+  
+.dropdown-item p {
+    margin: 0;
+    color: #333;
+}
+  
+.dropdown-item h3 {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.dropdown-item h3 span {
+    font-weight: 500;
+}
+  
+.dropdown-item:hover {
+    background-color: #f7f7f7;
+}
+
+.notification-image {
+    width: 50px !important;
+    height: 50px !important;
+    opacity: 1 !important;
+}
+
 .sidebar {
     display: flex;
     flex-direction: column; 
@@ -162,6 +212,36 @@ header {
     color: var(--accent-colour-1);
 }
 
+.info-div {
+    display: flex;
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: var(--accent-colour-1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    gap: 15px;
+}
+
+.info-icon {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.info-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-div h3 {
+    font-size: 1rem;
+}
+
 .chats-container { 
     display: flex;
     flex-direction: column;
@@ -185,13 +265,39 @@ header {
 .user {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .user img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+}
+
+.user-notification {
+    display: flex;
+    flex-direction: row;
+    margin-left: 50px;
+}
+
+.unread-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
 }
 
 .chats-user-container:hover {
@@ -242,7 +348,11 @@ header {
     position: absolute;
     bottom: 0;
     margin-bottom: 20px;
-    width: 100%;
+    width: 90%;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-color: #fff;
 }
 
 .messaging-input-content input {
@@ -282,7 +392,7 @@ header {
 
 .messaging-content {
     overflow-y: auto;
-    max-height: 650px;
+    max-height: 600px;
     padding: 10px;
 }
 

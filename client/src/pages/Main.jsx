@@ -22,6 +22,10 @@ function Main() {
         }
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+    }, [loggedInUser]);
+
     const handleUserClick = (user) => {
         setSelectedUser(user);
     }

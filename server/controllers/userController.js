@@ -5,16 +5,24 @@ const passport = require('passport');
 exports.login = async (req, res, next) => {
     passport.authenticate('local', async (err, user, info) => {
         try {
-            if (err || !user) {
-                const error = new Error('An error occurred.');
-                return next(error);
+            if (err) {
+                console.error('Passport authentication error:', err);
+                return next(err);
+            }
+            if (!user) {
+                console.error('User not found:', info);
+                return res.status(401).json({ message: 'Authentication failed' });
             }
             req.login(user, { session: false }, async (error) => {
-                if (error) return next(error);
+                if (error) {
+                    console.error('Error during login:', error);
+                    return next(error);
+                }
                 const token = jwt.sign({ userId: user._id }, 'SECRET_KEY');
                 return res.json({ token });
             });
         } catch (error) {
+            console.error('Error in login function:', error);
             return next(error);
         }
     })(req, res, next);

@@ -145,6 +145,12 @@
     width: 50%;
 }
 
+.error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
 @media screen and (max-width: 768px) {
     .access-container {
         width: 100%;

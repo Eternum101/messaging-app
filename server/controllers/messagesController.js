@@ -33,7 +33,8 @@ exports.getUnreadMessages = async (req, res) => {
             to: new mongoose.Types.ObjectId(req.query.user),
             from: { $ne: req.user._id },
             unread: true, 
-        });
+        }).populate('from', 'firstName lastName image'); 
+        console.log('Unread messages:', messages);
         res.json(messages);
     } catch (error) {
         console.error('Error fetching unread messages:', error);

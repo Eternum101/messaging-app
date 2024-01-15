@@ -7,28 +7,29 @@ import useCurrentUser from "../hooks/useCurrentUser";
 import Loading from '../components/Loading';
 
 function Header({ loggedInUser }) {
-
     const { userData, isLoading } = useCurrentUser(loggedInUser);
     const token = localStorage.getItem('token');
 
-    const [unreadCount, setUnreadCount] = useState(0);
+    const [unreadMessages, setUnreadMessages] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        if (loggedInUser && unreadCount === null) {
+        if (loggedInUser) {
             axios.get(`/messages/unread?user=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then(response => {
-                setUnreadCount(response.data.length);
+                setUnreadMessages(response.data);
             })
             .catch(error => {
                 console.error('Error fetching unread messages:', error);
             });
         }
-    }, [loggedInUser, unreadCount]);
-    
+    }, [loggedInUser]);
+
+    const toggleDropdown = () => setShowDropdown(!showDropdown);
 
     if (isLoading) {
         return <div><Loading/></div>;
@@ -36,19 +37,40 @@ function Header({ loggedInUser }) {
 
     return (
         <header>
-        <Link to='/home'>
-            <div className="header-logo-container">
-                <BiSolidMessageDetail/>
-                <h1>Messaging App</h1>
-            </div>
-        </Link>
+            <Link to='/home'>
+                <div className="header-logo-container">
+                    <BiSolidMessageDetail/>
+                    <h1>Messaging App</h1>
+                </div>
+            </Link>
             <div className="user-container">
-            <div style={{ position: 'relative'}}>
-                <button>
-                    <IoNotificationsSharp />
-                    {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
-                </button>
-            </div>
+                <div style={{ position: 'relative' }}>
+                    <button onClick={toggleDropdown}>
+                        <IoNotificationsSharp />
+                        {unreadMessages.length > 0 && <span className="notification-badge">{unreadMessages.length}</span>}
+                    </button>
+                    {showDropdown && (
+                        <div className="dropdown-menu">
+                            {unreadMessages.length > 0 ? (
+                                unreadMessages.map(message => (
+                                    <Link to="/home" key={message._id} className="dropdown-item-link">
+                                        <div className="dropdown-item">
+                                            <img className="notification-image" src={message.from.image} alt={`${message.from.firstName} ${message.from.lastName}`} />
+                                            <div className="notification-desc">
+                                                <h3>{message.from.firstName} {message.from.lastName} <span>sent you a message:</span></h3>
+                                                <p>{message.text}</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <div className="dropdown-item">
+                                    <p>You have no new notifications.</p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
                 <Link to='/profile'>
                     <button>
                         <img src={userData?.image} alt={userData?.firstName} />

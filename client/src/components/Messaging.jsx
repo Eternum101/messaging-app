@@ -15,7 +15,7 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (user && loggedInUser) {
+        if (user && loggedInUser && isChatSelected) {
             axios.get(`/messages?user=${user._id}&from=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -24,28 +24,30 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
             .then(response => {
                 setMessages(response.data);
                 setIsLoading(false);
-                response.data.forEach(message => {
-                    if (message.unread) {
-                        axios.put(`/messages/${message._id}/read`, {}, {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        })
-                        .then(response => {
-                            console.log('Message marked as read:', response.data);
-                        })
-                        .catch(error => {
-                            console.error('Error marking message as read:', error);
-                        });
-                    }
-                });
+                if (isChatSelected) {
+                    response.data.forEach(message => {
+                        if (message.unread && message.to === loggedInUser.userId) { // Check if the logged-in user is the recipient
+                            axios.put(`/messages/${message._id}/read`, {}, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`
+                                }
+                            })
+                            .then(response => {
+                                console.log('Message marked as read:', response.data);
+                            })
+                            .catch(error => {
+                                console.error('Error marking message as read:', error);
+                            });
+                        }
+                    });
+                }
             })
             .catch(error => {
                 console.error('Error fetching messages:', error);
                 setIsLoading(false);
             });
         }
-    }, [user, loggedInUser]);
+    }, [user, loggedInUser, isChatSelected]);
     
     const handleSendClick = () => {
         if (user) {
@@ -93,21 +95,21 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
                 <h4>{user.email}</h4>
             </div>
             </div>
-    <div className="messaging-content">
-            {messages.map((message, index) => {
-    const fromUserId = typeof message.from === 'string' ? message.from : message.from._id;
-    return (
-        <div className="messaging-user-container">
-            <div 
-                key={index} 
-                className={`message ${fromUserId === loggedInUser.userId ? 'from-user' : 'to-user'}`}
-            >
-                <p>{message.text}</p>
+            <div className="messaging-content">
+    {messages.map((message) => {
+        const fromUserId = typeof message.from === 'string' ? message.from : message.from._id;
+        return (
+            <div key={message._id} className="messaging-user-container"> {/* Use message._id as the key */}
+                <div 
+                    className={`message ${fromUserId === loggedInUser.userId ? 'from-user' : 'to-user'}`}
+                >
+                    <p>{message.text}</p>
+                </div>
             </div>
-        </div>
-    );
-})}
+        );
+    })}
 </div>
+
     <div className="messaging-input-container">
         <div className="messaging-input-content">
         <div style={{ position: 'relative' }}>
