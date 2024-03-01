@@ -14,31 +14,19 @@ A Messaging Application that primarily allows you to chat with other users.
 ## Screenshots
 
 ### Initial Screen
-![](screenshots/initial-screen-inventory-app.png) 
+![](screenshots/initial-screen-messaging-app.png) 
 
-### Items Page
-![](screenshots/items-page-inventory-app.png) 
+### Sign Up Form
+![](screenshots/sign-up-messaging-app.png)
 
-### Add Item
-![](screenshots/add-item-inventory-app.png)
+### Chat Page
+![](screenshots/chat-messaging-app.png)
 
-### Individual Items Page
-![](screenshots/individual-item-page-inventory-app.png)
+### User Profile
+![](screenshots/user-profile-messaging-app.png)
 
-### Update Item
-![](screenshots/update-item-inventory-app.png)
-
-### Categories Page
-![](screenshots/categories-page-inventory-app.png)
-
-### Add Category
-![](screenshots/add-category-inventory-app.png)
-
-### Individual Categories Page
-![](screenshots/individual-category-page-inventory-app.png)
-
-### Update Category
-![](screenshots/update-category-inventory-app.png)
+### User Profile (Editing)
+![](screenshots/editing-user-profile-messaging-app.png)
 
 [Back to Top](#messaging-app)
 
