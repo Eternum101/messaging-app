@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from '../components/Loading';
+import { URL } from '../App';
 
 function Chats({ handleUserClick, loggedInUser, isChatSelected, setIsChatSelected }) {
     const [users, setUsers] = useState([]);
@@ -13,7 +14,7 @@ function Chats({ handleUserClick, loggedInUser, isChatSelected, setIsChatSelecte
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('/users')
+        axios.get(`${URL}/users`)
             .then(response => {
                 setUsers(response.data);
                 setIsLoading(false);
@@ -26,7 +27,7 @@ function Chats({ handleUserClick, loggedInUser, isChatSelected, setIsChatSelecte
     
     useEffect(() => {
         if (loggedInUser) {
-            axios.get(`/messages/unread?user=${loggedInUser.userId}`, {
+            axios.get(`${URL}/messages/unread?user=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

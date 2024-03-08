@@ -29,6 +29,10 @@ app.use(session({
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL })
 }));
+app.use(cors({
+    origin: ["http://localhost:3000", 
+    ],
+}));
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;

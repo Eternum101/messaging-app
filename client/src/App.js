@@ -3,6 +3,8 @@ import Login from './pages/Login';
 import Main from './pages/Main';
 import Profile from './pages/Profile';
 
+export const URL = process.env.REACT_APP_SERVER_URL;
+
 function App() {
   return (
   <Router>

@@ -8,8 +8,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail, MdClose } from "react-icons/md";
 import { CountryDropdown } from 'react-country-region-selector';
 import imageCompression from 'browser-image-compression';
-
 import useCurrentUser from "../hooks/useCurrentUser";
+import { URL } from "../App";
 
 function Profile() {
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
@@ -75,7 +75,7 @@ function Profile() {
             formData.append('image', editedImage.image);
         }
     
-        axios.put('/users/current', formData, {
+        axios.put(`${URL}/users/current`, formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',

@@ -11,7 +11,7 @@ function Sidebar() {
     const [showNotification, setShowNotification] = useState(false);
 
     const handleLogout = () => {
-        axios.get('/logout')
+        axios.get(`/logout`)
             .then(() => {
                 localStorage.removeItem('token');
                 console.log('Logged out');

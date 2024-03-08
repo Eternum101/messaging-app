@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { BiSolidMessageDetail } from "react-icons/bi";
 import useCurrentUser from "../hooks/useCurrentUser";
 import Loading from '../components/Loading';
+import { URL } from "../App";
 
 function Header({ loggedInUser }) {
     const { userData, isLoading } = useCurrentUser(loggedInUser);
@@ -15,7 +16,7 @@ function Header({ loggedInUser }) {
 
     useEffect(() => {
         if (loggedInUser) {
-            axios.get(`/messages/unread?user=${loggedInUser.userId}`, {
+            axios.get(`${URL}/messages/unread?user=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

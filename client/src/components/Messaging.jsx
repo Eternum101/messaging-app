@@ -5,6 +5,7 @@ import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import EmojiPicker from 'emoji-picker-react';
 import Loading from '../components/Loading';
+import { URL } from "../App";
 
 function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
     const [messages, setMessages] = useState([]); 
@@ -17,7 +18,7 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
 
     useEffect(() => {
         if (user && loggedInUser && isChatSelected) {
-            axios.get(`/messages?user=${user._id}&from=${loggedInUser.userId}`, {
+            axios.get(`${URL}/messages?user=${user._id}&from=${loggedInUser.userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -28,7 +29,7 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
                 if (isChatSelected) {
                     response.data.forEach(message => {
                         if (message.unread && message.to === loggedInUser.userId) { // Check if the logged-in user is the recipient
-                            axios.put(`/messages/${message._id}/read`, {}, {
+                            axios.put(`${URL}/messages/${message._id}/read`, {}, {
                                 headers: {
                                     'Authorization': `Bearer ${token}`
                                 }
@@ -55,7 +56,7 @@ function Messaging({ user, loggedInUser, isChatSelected, setIsChatSelected }) {
             const message = { text: newMessage, to: user._id, from: loggedInUser.userId };
             console.log('Sending new message:', message);
             
-            axios.post('/messages', message, {
+            axios.post(`${URL}/messages`, message, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -5,6 +5,7 @@ import accessImage from '../assets/images/access.svg';
 import { BiSolidMessageDetail } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
+import { URL } from "../App";
 
 function Login() {
     const [isLogin, setIsLogin] = useState(true);
@@ -37,7 +38,7 @@ function Login() {
         const demoEmail = 'johndoe@gmail.com'; 
         const demoPassword = 'johndoe123';
 
-        axios.post('/users/login', { email: demoEmail, password: demoPassword })
+        axios.post(`${URL}/users/login`, { email: demoEmail, password: demoPassword })
         .then(response => {
             localStorage.setItem('token', response.data.token);
             navigate('/home');
@@ -51,9 +52,8 @@ function Login() {
         setIsLoading(true);
         event?.preventDefault();
         if (isLogin) {
-            axios.post('/users/login', { email, password })
+            axios.post(`${URL}/users/login`, { email, password })
                 .then(response => {
-                    console.log('Login successful:', response.data);
                     localStorage.setItem('token', response.data.token);
                     navigate('/home');
                     setIsLoading(false);
@@ -67,9 +67,8 @@ function Login() {
                     setIsLoading(false);
                 });
         } else {
-            axios.post('/users/signup', { firstName, lastName, email, password })
+            axios.post(`${URL}/users/signup`, { firstName, lastName, email, password })
                 .then(response => {
-                    console.log('Signup successful:', response.data);
                     localStorage.setItem('token', response.data.token);
                     navigate('/home');
                 })

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { URL } from '../App';
 
 const useCurrentUser = (loggedInUser) => {
     const [userData, setUserData] = useState(null);
@@ -8,7 +9,7 @@ const useCurrentUser = (loggedInUser) => {
 
     useEffect(() => {
         if (loggedInUser && !userData) {
-            axios.get('/users/current', {
+            axios.get(`${URL}/users/current`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
