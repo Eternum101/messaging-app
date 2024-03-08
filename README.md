@@ -1,6 +1,6 @@
 # Messaging App
 
-View Demo
+🔗 [View Demo](https://messaging-app-2mr0.onrender.com/)
 
 ## Table of Contents
 - [About The Project](#about-the-project)
