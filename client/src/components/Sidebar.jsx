@@ -1,5 +1,4 @@
 import { RiMessage3Fill, RiSettingsFill, RiAdminFill, RiLogoutBoxLine } from "react-icons/ri";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -11,15 +10,8 @@ function Sidebar() {
     const [showNotification, setShowNotification] = useState(false);
 
     const handleLogout = () => {
-        axios.get(`/logout`)
-            .then(() => {
-                localStorage.removeItem('token');
-                console.log('Logged out');
-                navigate('/');
-            })
-            .catch(error => {
-                console.error('Error logging out:', error);
-            });
+        localStorage.removeItem('token');
+        navigate('/');
     };
 
     const handleIconClick = () => {
