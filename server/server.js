@@ -31,7 +31,7 @@ app.use(session({
 }));
 app.use(cors({
     origin: ["http://localhost:3000", 
-    ],
+    "https://messaging-app-2mr0.onrender.com"],
 }));
 
 const passport = require('passport');
