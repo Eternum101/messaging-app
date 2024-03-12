@@ -1,6 +1,6 @@
 # Messaging App
 
-🔗 [View Demo](https://messaging-app-2mr0.onrender.com/) (Please Allow Up to 50 Seconds for Website to Load from Cold Start)
+🔗 [View Demo](https://messaging-app-2mr0.onrender.com/) **(Please Allow Up to 50 Seconds for Website to Load from Cold Start)**
 
 ## Table of Contents
 - [About The Project](#about-the-project)
